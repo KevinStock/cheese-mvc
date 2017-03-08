@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by kevinstock on 3/7/17.
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 @RequestMapping(value = "cheese")
 public class CheeseController {
 
-    static ArrayList<String> cheeses = new ArrayList<>();
+    static HashMap<String, String> cheeses = new HashMap<>();
 
     @RequestMapping(value = "")
     public String index(Model model) {
@@ -38,8 +39,8 @@ public class CheeseController {
 //        String cheeseName = request.getParameter("cheeseName");
 //    }
     @RequestMapping(value = "add", method = RequestMethod.POST)
-    public String processAddCheeseForm(@RequestParam String cheeseName) {
-        cheeses.add(cheeseName);
+    public String processAddCheeseForm(@RequestParam String cheeseName, @RequestParam String cheeseDescription) {
+        cheeses.put(cheeseName, cheeseDescription);
 
         // redirect to /cheese
         return "redirect:";

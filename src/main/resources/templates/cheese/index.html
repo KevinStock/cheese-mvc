@@ -7,11 +7,13 @@
 
     <nav th:replace="fragments :: navigation"></nav>
 
-    <!--/*@thymesVar id="cheeses" type="java"*/-->
-    <p th:unless="${cheeses} and ${cheeses.size()}">no cheese :(</p>
-    <ul>
+    <div id="content">
         <!--/*@thymesVar id="cheeses" type="java"*/-->
-        <li th:each="cheese : ${cheeses}" th:text="${cheese}"></li>
-    </ul>
+        <p th:unless="${cheeses} and ${cheeses.size()}">no cheese :(</p>
+        <ul>
+            <!--/*@thymesVar id="cheeses" type="java"*/-->
+            <li th:each="cheese : ${cheeses}" th:text="${cheese.key} + ': ' + ${cheese.value}"></li>
+        </ul>
+    </div>
 </body>
 </html>
