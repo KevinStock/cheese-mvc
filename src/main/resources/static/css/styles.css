@@ -10,6 +10,10 @@ ul {
 
 }
 
+.error {
+    color: red;
+}
+
 ul.navList li {
     list-style: none;
     display: inline-block;

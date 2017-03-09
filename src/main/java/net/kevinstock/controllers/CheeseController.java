@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -39,10 +40,41 @@ public class CheeseController {
 //        String cheeseName = request.getParameter("cheeseName");
 //    }
     @RequestMapping(value = "add", method = RequestMethod.POST)
-    public String processAddCheeseForm(@RequestParam String cheeseName, @RequestParam String cheeseDescription) {
-        cheeses.put(cheeseName, cheeseDescription);
+    public String processAddCheeseForm(@RequestParam String cheeseName, @RequestParam String cheeseDescription, Model model) {
+        if (cheeseName.equals("")) {
+            String error = "Cheese name is required";
+            model.addAttribute("error", error);
+            return "/cheese/add";
+        }
+        else {
+            cheeses.put(cheeseName, cheeseDescription);
 
-        // redirect to /cheese
+            // redirect to /cheese
+            return "redirect:";
+        }
+    }
+
+    @RequestMapping(value = "remove", method = RequestMethod.GET)
+    public String displayRemoveCheeseForm(HttpServletRequest request, Model model) {
+        String cheese = request.getParameter("cheese");
+        if (cheese == null) {
+            model.addAttribute("cheeses", cheeses);
+            model.addAttribute("title", "Remove Cheese");
+            return "cheese/remove";
+        }
+        else {
+            cheeses.remove(cheese);
+            return "redirect:";
+        }
+    }
+
+    @RequestMapping(value = "remove", method = RequestMethod.POST)
+    public String processRemoveCheeseForm(@RequestParam ArrayList<String> cheeseName) {
+        for (String cheese : cheeseName) {
+            cheeses.remove(cheese);
+            System.out.println(cheeseName + " removed");
+        }
+
         return "redirect:";
     }
 
