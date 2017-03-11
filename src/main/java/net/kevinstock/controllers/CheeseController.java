@@ -1,16 +1,14 @@
 package net.kevinstock.controllers;
 
+import net.kevinstock.models.Cheese;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by kevinstock on 3/7/17.
@@ -19,7 +17,7 @@ import java.util.HashMap;
 @RequestMapping(value = "cheese")
 public class CheeseController {
 
-    static HashMap<String, String> cheeses = new HashMap<>();
+    static ArrayList<Cheese> cheeses = new ArrayList<>();
 
     @RequestMapping(value = "")
     public String index(Model model) {
@@ -47,8 +45,8 @@ public class CheeseController {
             return "/cheese/add";
         }
         else {
-            cheeses.put(cheeseName, cheeseDescription);
-
+            cheeses.add(new Cheese(cheeseName, cheeseDescription));
+            System.out.println(cheeseName + " added");
             // redirect to /cheese
             return "redirect:";
         }
@@ -63,7 +61,12 @@ public class CheeseController {
             return "cheese/remove";
         }
         else {
-            cheeses.remove(cheese);
+            for (Cheese c : cheeses) {
+                if (c.getName().equals(cheese)) {
+                    cheeses.remove(c);
+                    break;
+                }
+            }
             return "redirect:";
         }
     }
@@ -71,7 +74,12 @@ public class CheeseController {
     @RequestMapping(value = "remove", method = RequestMethod.POST)
     public String processRemoveCheeseForm(@RequestParam ArrayList<String> cheeseName) {
         for (String cheese : cheeseName) {
-            cheeses.remove(cheese);
+            for (Cheese c : cheeses) {
+                if (c.getName().equals(cheese)) {
+                    cheeses.remove(c);
+                    break;
+                }
+            }
             System.out.println(cheeseName + " removed");
         }
 
